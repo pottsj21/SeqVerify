@@ -7,7 +7,7 @@ SeqVerify is a Python-based command line tool for analysis of whole genome seque
 * BCFtools
 * BLAST
 * BRACKEN
-* BWA >=0.7
+* BWA-MEM2 = 2.3
 * CNVPytor >=1.3
 * HTSLIB
 * IDNA
