@@ -244,7 +244,7 @@ if args.start == "beginning" or args.start == "all":
         os.system(f'echo "$(cat {temp_folder}/{marker_list_file})" >> {temp_folder}/{genome_with_markers}')
 
     #Builds the indices for the genome that has now been augmented with the transgenes, necessary for alignment
-    os.system(f'bwa index -b {base_block} {temp_folder}/{genome_with_markers}')
+    os.system(f'bwa-mem2 index -b {base_block} {temp_folder}/{genome_with_markers}')
     os.system(f'cp {temp_folder}/{genome_with_markers} {folder_insertion}/{genome_with_markers}')
     
     if args.keepgoing:
@@ -255,7 +255,7 @@ if args.start == "align" or args.start == "all":
     #Beginning of multithreaded part:
 
     #Aligns the new genome using BWA-MEM
-    os.system(f'bwa mem -M -t {threads} {temp_folder}/{genome_with_markers} {reads_1_path} {reads_2_path} > {temp_folder}/{aligned_with_markers}')
+    os.system(f'bwa-mem2 mem -M -t {threads} {temp_folder}/{genome_with_markers} {reads_1_path} {reads_2_path} > {temp_folder}/{aligned_with_markers}')
     if args.keepgoing:
         print("Finished align, continuing to markers")
         args.start = "markers"
@@ -396,7 +396,7 @@ if args.start == "variant" or args.start == "all":
             print("Detected that BWA indexing was already performed. Skipping BWA indexing.")
         else:
             print("Existing BWA index not detected. Performing indexing.")
-            os.system(f"bwa index {variant_genome_source_path}")
+            os.system(f"bwa-mem2 index {variant_genome_source_path}")
         if os.path.isfile(variant_genome_source_path+".fai"):
             print("Detected that samtools faidx was already performed. Skipping samtools faidx.")
         else:
@@ -404,7 +404,7 @@ if args.start == "variant" or args.start == "all":
             os.system(f"samtools faidx {variant_genome_source_path}")
         
         #realigning the reads to the new genome
-        bwa_cmd = f"bwa mem -M -t {threads} {variant_genome_source_path} {reads_1_path} {reads_2_path} > {temp_folder}/{variant_genome_aligned}"
+        bwa_cmd = f"bwa-mem2 mem -M -t {threads} {variant_genome_source_path} {reads_1_path} {reads_2_path} > {temp_folder}/{variant_genome_aligned}"
         
         exitcode = os.system(bwa_cmd)
         if exitcode!=0: sys.exit("BWA failed")

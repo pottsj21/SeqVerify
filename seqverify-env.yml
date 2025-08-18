@@ -7,7 +7,7 @@ dependencies:
   - bcftools
   - blast
   - bracken
-  - bwa
+  - bwa-mem2=2.3
   - cnvpytor
   - htslib
   - idna
